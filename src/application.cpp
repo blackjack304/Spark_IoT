@@ -26,11 +26,19 @@
 /* Includes ------------------------------------------------------------------*/  
 #include "application.h"
 
+int analogvalue = 0;
+double tempC = 0;
+char *message = "my name is spark";
+
+
+
+
 /* Function prototypes -------------------------------------------------------*/
 int tinkerDigitalRead(String pin);
 int tinkerDigitalWrite(String command);
 int tinkerAnalogRead(String pin);
 int tinkerAnalogWrite(String command);
+int mynewfun(String command);
 
 SYSTEM_MODE(AUTOMATIC);
 
@@ -38,20 +46,50 @@ SYSTEM_MODE(AUTOMATIC);
 void setup()
 {
 	//Setup the Tinker application here
+    
+    Serial.print("BlackJack: Welcome\r\n");
 
 	//Register all the Tinker functions
 	Spark.function("digitalread", tinkerDigitalRead);
 	Spark.function("digitalwrite", tinkerDigitalWrite);
 
-	Spark.function("analogread", tinkerAnalogRead);
+	//Spark.function("analogread", tinkerAnalogRead);
 	Spark.function("analogwrite", tinkerAnalogWrite);
+    
+    // variable name max length is 12 characters long
+    Spark.variable("analogvalue", &analogvalue, INT);
+    Spark.variable("temp", &tempC, DOUBLE);
+    Spark.variable("mess", message, STRING);
+    
+    Spark.function("MyNewFunc", mynewfun);
+    pinMode(A0, INPUT);
+    pinMode(A7, OUTPUT);
+    pinMode(D7, OUTPUT);
 
+}
+
+int mynewfun(String command)
+{
+    Serial.print("MyNewFunc...");
+    if (command == "dig")
+        tinkerDigitalWrite("D7 HIGH");
+    else if (command == "ang")
+        tinkerAnalogWrite("A7 HIGH");
+    else
+        return -1;
+    Serial.print("DONE\r\n");
+    return 1;
 }
 
 /* This function loops forever --------------------------------------------*/
 void loop()
 {
 	//This will run in a loop
+    // Read the analog value of the sensor (TMP36)
+    analogvalue = analogRead(A0);
+    //Convert the reading into degree celcius
+    tempC = (((analogvalue * 3.3)/4095) - 0.5) * 100;
+    delay(200);
 }
 
 /*******************************************************************************

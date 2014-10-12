@@ -38,6 +38,8 @@ extern "C" {
 #include "usb_prop.h"
 #include "sst25vf_spi.h"
 }
+#include "spark_wiring_usbserial.h"
+
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -146,6 +148,7 @@ extern "C" void SparkCoreConfig(void)
 	/* Connect to Spark Cloud by default */
 	SPARK_CLOUD_CONNECT = 1;
 #endif
+    Serial.begin(9600);
 }
 
 /*******************************************************************************

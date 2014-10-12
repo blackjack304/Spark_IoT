@@ -34,7 +34,8 @@ rwildcard = $(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2
 # $2 the pattern to match, e.g. *.cpp
 target_files = $(patsubst $(SRC_PATH)%,%,$(call rwildcard,$(SRC_PATH)$1,$2))
 
-
+SPARK_CORE_ID = 53ff73065075535125551587
+SPARK_ACCESS_TOKEN = 2d78f3ff2db2e6c356e130d9e3471d51c3e6ecf5
 
 # URL to invoke cloud flashing
 CLOUD_FLASH_URL = https://api.spark.io/v1/devices/$(SPARK_CORE_ID)\?access_token=$(SPARK_ACCESS_TOKEN)
